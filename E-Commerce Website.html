@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple E-Commerce</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f1f1;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+      justify-content: center;
+    }
+
+    .product {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px;
+      width: 200px;
+      text-align: center;
+    }
+
+    .product img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .product h3 {
+      font-size: 18px;
+    }
+
+    .product button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .cart {
+      background-color: white;
+      padding: 20px;
+      margin: 20px auto;
+      width: 80%;
+      max-width: 600px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .cart h2 {
+      margin-top: 0;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .total {
+      font-weight: bold;
+      text-align: right;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🛍️ Simple E-Commerce Website</h1>
+  </header>
+
+  <div class="container" id="product-list">
+    <!-- Products inserted by JavaScript -->
+  </div>
+
+  <div class="cart">
+    <h2>🛒 Your Cart</h2>
+    <div id="cart-items"></div>
+    <div class="total">Total: ₹<span id="cart-total">0</span></div>
+  </div>
+
+  <script>
+    const products = [
+      { id: 1, name: "Smartphone", price: 15000, img: "https://purepng.com/public/uploads/large/purepng.com-android-smartphonepersonal-computersmartphonemobile-operating-systemcellular-phoneandroid-17015283912796apux.png" },
+      { id: 2, name: "Headphones", price: 2000, img: "https://freepngimg.com/thumb/headphones/21-headphones-png-image.png" },
+      { id: 3, name: "Shoes", price: 3000, img: "https://freepngimg.com/download/shoes/28530-3-nike-shoes-transparent.png" },
+      { id: 4, name: "Backpack", price: 1200, img: "https://pngimg.com/uploads/backpack/backpack_PNG6310.png" }
+    ];
+
+    const cart = [];
+
+    function renderProducts() {
+      const productList = document.getElementById('product-list');
+      products.forEach(product => {
+        const productEl = document.createElement('div');
+        productEl.classList.add('product');
+        productEl.innerHTML = `
+          <img src="${product.img}" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <p>Price: ₹${product.price}</p>
+          <button onclick="addToCart(${product.id})">Add to Cart</button>
+        `;
+        productList.appendChild(productEl);
+      });
+    }
+
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      cart.push(product);
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById('cart-items');
+      cartItems.innerHTML = '';
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        total += item.price;
+        const itemEl = document.createElement('div');
+        itemEl.classList.add('cart-item');
+        itemEl.innerHTML = `
+          <span>${item.name} - ₹${item.price}</span>
+          <button onclick="removeFromCart(${index})">❌</button>
+        `;
+        cartItems.appendChild(itemEl);
+      });
+
+      document.getElementById('cart-total').textContent = total;
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    // Initialize
+    renderProducts();
+  </script>
+</body>
+</html>
